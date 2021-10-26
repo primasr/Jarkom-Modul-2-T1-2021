@@ -1,0 +1,1 @@
+lynx http://super.franky.ti1.com
