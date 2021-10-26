@@ -58,11 +58,11 @@ bash last_script.sh
 
 Kenapa kok ada dua file script di Enieslobby ?
 
-Karena setelah kita run `bash script.sh` pada Skypie, disana kita melakukan perubahan konfigurasi yang mengharuskan kita melakukan restart bind9 di Enieslobby. Jadi, diperlukan run satu file script lagi untuk melakukan restart bind di Enieslobby :D
+Karena setelah kita run `bash script.sh` pada Skypie, disana kita melakukan perubahan konfigurasi yang mengharuskan kita melakukan restart bind9 di Enieslobby. Jadi, diperlukan run satu file script lagi untuk melakukan `service bind9 restart` di Enieslobby :D
 
 ## Mengecek, Apakah Sudah Betul ?
 
-Terdapat BUANYAK file script dengan format `xx_testing.sh` pada node Loguetown (Loguetown disini sbeagai client) (tidak saya letakkan di Alabasta)
+Terdapat BUANYAK file script dengan format `xx_testing.sh` pada node Loguetown (Loguetown disini sebagai client) (tidak saya letakkan di Alabasta)
 
 Jika ingin mengecek, tinggal jalankan file script berdasarkan nomor soal yang ingin di cek
 
