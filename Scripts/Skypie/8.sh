@@ -14,7 +14,7 @@ echo '
 </VirtualHost>
 ' > /etc/apache2/sites-available/franky.ti1.com.conf
 
-a2ensite franky.ti1.com.conf
+a2ensite franky.ti1.com
 
 # service apache2 restart
 

@@ -21,3 +21,5 @@ ns1             IN      A       10.42.2.3       ; IP Water7
 mecha           IN      NS      ns1
 www.mecha       IN      CNAME   franky.ti1.com.
 ' > /etc/bind/kaizoku/franky.ti1.com
+
+service bind9 start

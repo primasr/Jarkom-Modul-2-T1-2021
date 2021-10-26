@@ -5,7 +5,7 @@ echo '
         ServerAdmin webmaster@localhost
 
         ServerName general.mecha.franky.ti1.com
-        DocumentRoot/var/www/general.mecha.franky.ti1.com
+        DocumentRoot /var/www/general.mecha.franky.ti1.com
         <Directory />
             Options FollowSymLinks
             AllowOverride None
@@ -25,7 +25,7 @@ echo '
 <VirtualHost *:15500>
         ServerAdmin webmaster@localhost
         ServerName general.mecha.franky.ti1.com
-        DocumentRoot/var/www/general.mecha.franky.ti1.com
+        DocumentRoot /var/www/general.mecha.franky.ti1.com
         <Directory />
             Options FollowSymLinks
             AllowOverride None
@@ -57,7 +57,7 @@ Listen 15500
 </IfModule>
 ' > /etc/apache2/ports.conf
 
-a2ensite general.mecha.franky.ti1.com.conf
+a2ensite general.mecha.franky.ti1.com
 
 mkdir -p /var/www/general.mecha.franky.ti1.com
 

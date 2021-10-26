@@ -1,4 +1,4 @@
-cp -n /etc/apache2/sites-available/franky.ti1.com /etc/apache2/sites-available/super.franky.ti1.com.conf
+cp -n /etc/apache2/sites-available/franky.ti1.com.conf /etc/apache2/sites-available/super.franky.ti1.com.conf
 
 echo '
 <VirtualHost *:80>
@@ -23,6 +23,6 @@ echo '
 
 cp -R /var/www/franky.ti1.com /var/www/super.franky.ti1.com
 
-a2ensite super.franky.ti1.com.conf
+a2ensite super.franky.ti1.com
 
 service apache2 restart
