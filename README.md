@@ -141,7 +141,7 @@ zone "2.42.10.in-addr.arpa" {
     file "/etc/bind/kaizoku/2.42.10.in-addr.arpa";
 };
 ```
-Kemudian kami melakukan file db.local pada path /etc/bind ke dalam folder kaizoku yang baru saja dibuat dan ubah namanya menjadi 2.40.10.in-addr.arpa dengan command: ```cp /etc/bind/db.local /etc/bind/kaizoku/2.42.10.in-addr.arpa```
+Kemudian kami melakukan copy file db.local pada path /etc/bind ke dalam folder kaizoku yang baru saja dibuat dan ubah namanya menjadi 2.40.10.in-addr.arpa dengan command: ```cp /etc/bind/db.local /etc/bind/kaizoku/2.42.10.in-addr.arpa```
 
 Dan mengedit file ```/etc/bind/kaizoku/2.42.10.in-addr.arpa``` seperti berikut.
 ```
@@ -186,7 +186,7 @@ zone "2.42.10.in-addr.arpa" {
 ```
 Dan melakukan restart.
 
-b. Untuk di Water7  kami mengatur konfiguasinya pada ```/etc/bind/named.conf.local``` seperti berikut.
+b. Untuk di Water7  kami mengatur konfiguasinya pada ```/etc/bind/named.conf.local``` untuk memberikan status DNS Slave pada Water7 seperti berikut.
 ```
 zone "franky.ti1.com" {
     type slave;
@@ -205,21 +205,243 @@ c. Untuk testing, kami matikan terlebih dahulu Ennieslobbynya. Dengan command: `
 Setelah itu terdapat subdomain ```mecha.franky.yyy.com``` dengan alias ```www.mecha.franky.yyy.com``` yang didelegasikan dari EniesLobby ke Water7 dengan IP menuju ke Skypie dalam folder sunnygo
 
 ## Jawaban
+a. Pada Enieslobby, kami mengatur konfigurasi di ```/etc/bind/kaizoku/franky.ti1.com``` untuk membuat subdomain ```mecha.franky.yyy.com``` dan memberi alias menjadi ```www.mecha.franky.yyy.com``` seperti berikut.
+```
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     franky.ti1.com. root.franky.ti1.com. (
+                        2021100401      ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      franky.ti1.com.
+@       IN      A       10.42.2.2
+www     IN      CNAME   franky.ti1.com.
+super           IN      A       10.42.2.4       ; IP Skypie
+www.super       IN      CNAME   franky.ti1.com.
+ns1             IN      A       10.42.2.3       ; IP Water7
+mecha           IN      NS      ns1
+www.mecha       IN      CNAME   franky.ti1.com.
+```
+Kemudian kami juga mengganti konfigurasi option di ``` /etc/bind/named.conf.options``` seperti berikut.
+```
+options {
+        directory "/var/cache/bind";
+        allow-query{any;};
+        auth-nxdomain no;    # conform to RFC1035
+        listen-on-v6 { any; };
+};
+```
+Dan mengedit konfigurasi di ```/etc/bind/named.conf.local``` seperti berikut.
+```
+zone "franky.ti1.com" {
+    type master;
+    file "/etc/bind/kaizoku/franky.ti1.com";
+    allow-transfer { 10.42.2.3; };
+};
+zone "2.42.10.in-addr.arpa" {
+    type master;
+    file "/etc/bind/kaizoku/2.42.10.in-addr.arpa";
+};
+```
+Dan melakukan restart.
+
+b. Pada Water7 kami mengedit konfigurasi optionnya di ```/etc/bind/named.conf.options``` seperti berikut.
+```
+options {
+        directory "/var/cache/bind";
+        allow-query{any;};
+        auth-nxdomain no;    # conform to RFC1035
+        listen-on-v6 { any; };
+};
+```
+Kemudian mengedit konfigurasi lokalnya di ```/etc/bind/named.conf.local``` seperti berikut.
+```
+zone "mecha.franky.ti1.com" {
+    type master;
+    file "/etc/bind/sunnygo/mecha.franky.ti1.com";
+};
+```
+Setelah itu membuat file sunnygo```mkdir -p /etc/bind/sunnygo```. Kemudian kami melakukan copy file db.local pada path /etc/bind ke dalam folder sunnygo yang baru saja dibuat dan ubah namanya menjadi mecha.franky.ti1.com dengan command: ```cp /etc/bind/db.local /etc/bind/sunnygo/mecha.franky.ti1.com```.
+
+Kemudian mengedit konfigurasi di ```/etc/bind/sunnygo/mecha.franky.ti1.com``` dengan:
+```
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     mecha.franky.ti1.com. root.mecha.franky.ti1.com. (
+                        2021100401      ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      mecha.franky.ti1.com.
+@       IN      A       10.42.2.4       ; IP Skypie
+www     IN      CNAME   mecha.franky.ti1.com.
+```
+Kemudian melakukan restart.
+
+c. Di Loguetown kami melakukan testing dengan:
+
+```
+ping -c 3 mecha.franky.ti1.com
+```
+(Gambar 6.0)
+```
+ping -c 3 www.mecha.franky.ti1.com
+```
+(Gambar 6.1)
+
 ---
 ## Soal 7
 Untuk memperlancar komunikasi Luffy dan rekannya, dibuatkan subdomain melalui Water7 dengan nama ```general.mecha.franky.yyy.com``` dengan alias ```www.general.mecha.franky.yyy.com``` yang mengarah ke Skypie
 
 ## Jawaban
+a. Pada Water 7, kami mengedit konfigurasi di ```/etc/bind/sunnygo/mecha.franky.ti1.com``` untuk membuat subdomain dengan nama ```general.mecha.franky.ti1.com``` dan diberi alias ```www.general.mecha.franky.ti1.com``untuk diarakhkan ke IP Skypie (10.42.2.4) seperti berikut.
+```
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     mecha.franky.ti1.com. root.mecha.franky.ti1.com. (
+                        2021100401      ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      mecha.franky.ti1.com.
+@       IN      A       10.42.2.4       ; IP Skypie
+www     IN      CNAME   mecha.franky.ti1.com.
+general       IN      A       10.42.2.4       ; IP Skypie
+www.general   IN      CNAME   general.mecha.franky.ti1.com.
+```
+Kemudian dilakukan restart.
+
+b. Dan di Loguetown kami melakukan testing dengan command:
+```
+ping -c 3 general.mecha.franky.ti1.com
+```
+(Gambar 7.0)
+```
+host -t A general.mecha.franky.ti1.com
+```
+(Gambar 7.1)
+```
+host -t CNAME www.general.mecha.franky.ti1.com
+
+ping -c 3 www.general.mecha.franky.ti1.com
+```
+(Gambar 7.2)
+
 ---
 ## Soal 8
 Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pertama dengan webserver ```www.franky.yyy.com.``` Pertama, luffy membutuhkan webserver dengan DocumentRoot pada ```/var/www/franky.yyy.com.```
 
 ## Jawaban
+a. Pada Skypie, kami buat konfigurasi servernya terlebih dulu. Dengan Copy file 000-default.conf menjadi file /etc/apache2/sites-available/franky.ti1.com.conf dengan perintah: ```cp -n /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/franky.ti1.com.conf``` Kemudian mengatur konfigurasi pada ```/etc/apache2/sites-available/franky.ti1.com.conf``` untuk menambahkan nama server, server aliasnya, dan DocumentRoot sesuai soal seperti berikut.
+```
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/franky.ti1.com
+        ServerName franky.ti1.com
+        ServerAlias www.franky.ti1.com
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+Kemudian kami mengaktifkan konfigurasi franky.ti1.com dengan command: ```a2ensite franky.ti1.com```
+
+Kami buat folder dengan nama franky.ti1.com menggunakan command: ```mkdir -p /var/www/franky.ti1.com``` kemudian kami kembali ke folder sebelumnya dengan ```cd ~``` dan melakukan git clone github terlebih dahulu untuk mendapatkan file yang disediakan oleh soal dengan command:
+```
+if [ ! -d "/root/Praktikum-Modul-2-Jarkom" ] ; then
+    git clone https://github.com/FeinardSlim/Praktikum-Modul-2-Jarkom.git    
+fi
+```
+(gambar 8.0)
+
+Setelah itu kami lakukan unzip karena bentuk file yang diterima dalam bentuk zip file. dengan command:
+```
+unzip /root/Praktikum-Modul-2-Jarkom/franky.zip -d /var/www/franky.ti1.com
+```
+Kemudian kami memindahkan file yang telah diunzip ke /var/www/franky.ti1.comdengan command:
+
+```mv /var/www/franky.ti1.com/franky/* /var/www/franky.ti1.com```
+
+Setelah itu kami menghapus file yang telah diunzip dalam ```/var/www/franky.ti1.com/franky/``` dengan command:
+
+```rm -rf /var/www/franky.ti1.com/franky```
+
+Kemudian kami lakukan apache restartdengan command:
+
+```service apache2 restart```
+
+b. Pada Enieslobby, kami mengedit file ```/etc/bind/kaizoku/franky.ti1.com``` seperti berikut.
+```
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     franky.ti1.com. root.franky.ti1.com. (
+                        2021100401      ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      franky.ti1.com.
+@       IN      A       10.42.2.4       ; IP Skypie
+www     IN      CNAME   franky.ti1.com.
+super           IN      A       10.42.2.4       ; IP Skypie
+www.super       IN      CNAME   super.franky.ti1.com.
+ns1             IN      A       10.42.2.3       ; IP Water7
+mecha           IN      NS      ns1
+www.mecha       IN      CNAME   franky.ti1.com.
+```
+
+Kemudian kamu lakukan bind9 restart.
+
+c. Untuk testing pada Loguetown, kami gunakan command: ```lynx http://franky.ti1.com/index.php``` untuk mengecek konfigurasi server yang dibuat
+
+(gambar 8.1)
 ---
 ## Soal 9
 Setelah itu, Luffy juga membutuhkan agar url ```www.franky.yyy.com/index.php/home``` dapat menjadi menjadi ```www.franky.yyy.com/home```
 
 ## Jawaban
+a. Pada Skypie kami mengaktifkan module rewrite dengan command:
+```a2enmod rewrite```. Setelah itu kami lakukan restart apache. Kemudian kami edit ```/var/www/franky.ti1.com/.htaccess``` dari Skypie seperti berikut. Hal ini dilakukan untuk mengatasi masalah hak akses root untuk mengedit file konfigurasi yang berada di folder /etc/apache2/sites-available tidak dimiliki, atau kita tidak ingin user lain untuk mengedit file konfigurasi yang berada di directory /etc/apache2/sites-available.
+```
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+```
+Kemudian kami edit ```/etc/apache2/sites-available/franky.ti1.com.conf``` untuk menambahkan follows symlink dan AllowOveride All supaya mod_rewrite dan .htaccessnya berjalan seperti berikut.
+```
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/franky.ti1.com
+        ServerName franky.ti1.com
+        ServerAlias www.franky.ti1.com
+         <Directory /var/www/franky.ti1.com>
+             Options +FollowSymLinks -Multiviews
+             AllowOverride All
+         </Directory>
+        Alias "/index.php" "/var/www/franky.ti1.com/index.php"
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+Kemudian kami lakukan apache restart.
+b. Pada Loguetown kami melakukan testing dengan command: ```lynx http://franky.ti1.com```
+(gambar 9.0)
+
 ---
 ## Soal 10
 Setelah itu, pada subdomain ```www.super.franky.yyy.com``` , Luffy membutuhkan penyimpanan aset yang memiliki DocumentRoot pada ```/var/www/super.franky.yyy.com```
