@@ -84,13 +84,13 @@ Setelah itu melakukan testing dengan command:
 
 ```ping -c 3 franky.ti1.com```
 
-(gambar 2.0)
+![2.0](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/2.0.jpg?raw=true)
 
 ```host -t CNAME www.franky.ti1.com```
 
 ```ping -c 3 www.franky.ti1.com```
 
-(gambar2.1)
+![2.1](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/2.1.jpg?raw=true)
 
 ---
 ## Soal 3
@@ -121,13 +121,13 @@ Setelah itu mulai merestartnya seperti biasa.
 b. Sedangkan pada Loguetown kami melakukan testing untuk mengecek apakah subdomain dapat berjalan seperti berikut.
 ```ping -c 3 super.franky.ti1.com```
 
-(gambar 3.0)
+![3.0](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/3.0.jpg?raw=true)
 
 ```host -t A super.franky.ti1.com```
 
 ```ping -c 3 www.super.franky.ti1.com```
 
-(gambar 3.1)
+![3.1](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/3.1.jpg?raw=true)
 
 ---
 ## Soal 4
@@ -163,7 +163,7 @@ Setelah itu melakukan restart
 
 b. Sedangkan pada Loguetown kami melakukan pengecekan dengan command: ```host -t PTR 10.42.2.2```
 
-(gambar 4.0)
+![4.0](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/4.0.jpg?raw=true)
 
 ---
 ## Soal 5
@@ -198,7 +198,7 @@ Dan melakukan restart.
 
 c. Untuk testing, kami matikan terlebih dahulu Ennieslobbynya. Dengan command: ```service bind9 stop``` dan di Loguetown kamu mulai melakukan testing dengan command: ```ping -c 3 franky.ti1.com```
 
-(gambar 5.0)
+![5.0](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/5.0.jpg?raw=true)
 
 ---
 ## Soal 6
@@ -292,11 +292,11 @@ c. Di Loguetown kami melakukan testing dengan:
 ```
 ping -c 3 mecha.franky.ti1.com
 ```
-(Gambar 6.0)
+![6.0](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/6.0.jpg?raw=true)
 ```
 ping -c 3 www.mecha.franky.ti1.com
 ```
-(Gambar 6.1)
+![2.0](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/6.1.jpg?raw=true)
 
 ---
 ## Soal 7
@@ -328,17 +328,17 @@ b. Dan di Loguetown kami melakukan testing dengan command:
 ```
 ping -c 3 general.mecha.franky.ti1.com
 ```
-(Gambar 7.0)
+![7.0](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/7.0.jpg?raw=true)
 ```
 host -t A general.mecha.franky.ti1.com
 ```
-(Gambar 7.1)
+![7.1](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/7.1.jpg?raw=true)
 ```
 host -t CNAME www.general.mecha.franky.ti1.com
 
 ping -c 3 www.general.mecha.franky.ti1.com
 ```
-(Gambar 7.2)
+![7.2](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/7.2.jpg?raw=true)
 
 ---
 ## Soal 8
@@ -364,7 +364,7 @@ if [ ! -d "/root/Praktikum-Modul-2-Jarkom" ] ; then
     git clone https://github.com/FeinardSlim/Praktikum-Modul-2-Jarkom.git    
 fi
 ```
-(gambar 8.0)
+![8.0](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/8.0.jpg?raw=true)
 
 Setelah itu kami lakukan unzip karena bentuk file yang diterima dalam bentuk zip file. dengan command:
 ```
@@ -409,7 +409,7 @@ Kemudian kamu lakukan bind9 restart.
 
 c. Untuk testing pada Loguetown, kami gunakan command: ```lynx http://franky.ti1.com/index.php``` untuk mengecek konfigurasi server yang dibuat
 
-(gambar 8.1)
+![8.1](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/8.1.jpg?raw=true)
 ---
 ## Soal 9
 Setelah itu, Luffy juga membutuhkan agar url ```www.franky.yyy.com/index.php/home``` dapat menjadi menjadi ```www.franky.yyy.com/home```
@@ -440,7 +440,7 @@ Kemudian kami edit ```/etc/apache2/sites-available/franky.ti1.com.conf``` untuk 
 ```
 Kemudian kami lakukan apache restart.
 b. Pada Loguetown kami melakukan testing dengan command: ```lynx http://franky.ti1.com```
-(gambar 9.0)
+![9.0](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/9.0.jpg?raw=true)
 
 ---
 ## Soal 10
