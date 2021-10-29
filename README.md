@@ -4,7 +4,7 @@
 
 - Prima Secondary Ramadhan  05311940000001
 - Asiyah Hanifah            05311940000002
-- Widya Inayatul            053119400000xx
+- Widya Inayatul            05311940000010
 ---
 ## Soal 1
 EniesLobby akan dijadikan sebagai DNS Master, Water7 akan dijadikan DNS Slave, dan Skypie akan digunakan sebagai Web Server. Terdapat 2 Client yaitu Loguetown, dan Alabasta. Semua node terhubung pada router Foosha, sehingga dapat mengakses internet
@@ -17,16 +17,22 @@ Kemudian kami atur konfigurasi pada setiap node seperti gambar berikut.
 
 a. Foosha sebagai router
 ![1.1](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/1.1.jpg?raw=true)
+
 b. Loguetown sebagai client
 ![1.2](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/1.2.jpg?raw=true)
+
 c. Alabasta sebagai client
 ![1.3](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/1.3.jpg?raw=true)
+
 d. Enieslobby sebagai DNS Master
 ![1.4](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/1.4.jpg?raw=true)
+
 e. Water7 sebagai DNS Slave
 ![1.5](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/1.5.jpg?raw=true)
+
 f. Skypie sebagai webserver
 ![1.6](https://github.com/primasr/Jarkom-Modul-2-T1-2021/blob/main/images/1.6.jpg?raw=true)
+
 Setelah itu, setiap node diaktifkan dengan mengklik tombol start. Selanjutnya, menjalankan command ```iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 10.42.0.0/16``` pada router Foosha upaya dapat terkoneksi dengan internet.
 
 Kemudian pada Ennieslobby, Water, dan Skypie dilakukan update package lists dengan menjalankan command:<br>
@@ -447,39 +453,269 @@ b. Pada Loguetown kami melakukan testing dengan command: ```lynx http://franky.t
 Setelah itu, pada subdomain ```www.super.franky.yyy.com``` , Luffy membutuhkan penyimpanan aset yang memiliki DocumentRoot pada ```/var/www/super.franky.yyy.com```
 
 ## Jawaban
----
+a. Pada node skypie melakukan konfigurasi virtual host dengan perintah ```/etc/apache2/sites-available/``` dan melakukan copy file ```franky.ti1.com.conf super.franky.ti1.com.conf``` kami edit konfigurasinya pada ```super.franky.ti1.com.conf``` seperti berikut. 
+```
+<VirtualHost *:80>
+
+    	ServerAdmin webmaster@localhost
+    	DocumentRoot /var/www/super.franky.ti1.com
+    	ServerName super.franky.ti1.com
+    	ServerAlias www.super.franky.ti1.com
+
+     	<Directory /var/www/super.franky.ti1.com>
+         	Options +FollowSymLinks -Multiviews
+         	AllowOverride All
+     	</Directory>
+
+    	Alias "/index.php" "/var/www/super.franky.ti1.com/index.php"
+
+    	ErrorLog ${APACHE_LOG_DIR}/error.log
+    	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>
+
+```
+Untuk mengaktifkan suatu konfigurasi, kita menggunakan perintah a2ensite diikuti dengan nama file konfigurasi yang telah dibuat. Perintah yang dijalankan ```a2ensite super.franky.ti1.com.conf```. lalu pindahkan directory dengan perintah ```cd /var/www```. melakukan copyfile ```cp -R franky.ti1.com super.franky.ti1.com```.
+
+Untuk mengaktifkan konfigurasi menggunakan perintah ```a2ensite super.franky.ti1.com.conf``` dan dilakukan restart apache menggunakan perintah ```service apache2 restart```.
+
+b. Melakukan testing pada Loguetown dengan perintah ```lynx http://super.franky.ti1.com/home```. seprti berikut ini
+
 ## Soal 11
 Akan tetapi, pada folder /public, Luffy ingin hanya dapat melakukan directory listing saja (pada ```super.franky.ti1.com```)
 
 ## Jawaban
----
+a. Pada skypie dilakukan unzip pada github modul 2 jarkom di directory super.franky.ti1.com seperti pada perintah ```unzip /root/Praktikum-Modul-2-Jarkom/super.franky.zip -d /var/www/super.franky.ti1.com ```. 
+
+memindahkan pada folder /public untuk melakukan directory listing dengan printah 
+```mv /var/www/super.franky.ti1.com/super.franky/error /var/www/super.franky.ti1.com```
+```mv /var/www/super.franky.ti1.com/super.franky/public /var/www/super.franky.ti1.com```
+
+Dan memindahkan directory dengan perintah ```/etc/apache2/sites-available``` lalu melakukan edit konfigurasi di ``` /etc/apache2/sites-available/super.franky.ti1.com.conf``` seperti berikut ini. 
+```
+<VirtualHost *:80>
+
+    	ServerAdmin webmaster@localhost
+    	DocumentRoot /var/www/super.franky.ti1.com
+    	ServerName super.franky.ti1.com
+    	ServerAlias www.super.franky.ti1.com
+
+     	<Directory /var/www/super.franky.ti1.com>
+         	Options +FollowSymLinks -Multiviews
+         	AllowOverride All
+     	</Directory>
+
+     	<Directory /var/www/super.franky.ti1.com/public>
+         	Options +Indexes
+     	</Directory>
+
+    	Alias "/index.php" "/var/www/super.franky.ti1.com/index.php"
+
+    	ErrorLog ${APACHE_LOG_DIR}/error.log
+    	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>
+
+```
+Dan dilakukan restart apache menggunakan perintah ```service apache2 restart```.
+
+b. Dilakukan testing pada Loguetown dengan perintah ```lynx http://super.franky.ti1.com/public```. untuk mengecek apakah sudah melakukan directory listing pada folder/public.
+
 ## Soal 12
 Tidak hanya itu, Luffy juga menyiapkan error file 404.html pada folder /error untuk mengganti error kode pada apache
 
 ## Jawaban
----
+a. Pada Skypie dilakukan edit kofigurasi pada ```/etc/apache2/sites-available/super.franky.ti1.com.conf``` seperti ini. Ditambahkan tag pada directory untuk /public ditambahkan options + indexes.
+
+```
+<VirtualHost *:80>
+
+    	ServerAdmin webmaster@localhost
+    	DocumentRoot /var/www/super.franky.ti1.com
+    	ServerName super.franky.ti1.com
+    	ServerAlias www.super.franky.ti1.com
+
+     	<Directory /var/www/super.franky.ti1.com>
+         	Options +FollowSymLinks -Multiviews
+         	AllowOverride All
+     	</Directory>
+
+     	<Directory /var/www/super.franky.ti1.com/public>
+         	Options +Indexes
+     	</Directory>
+
+    	Alias "/index.php" "/var/www/super.franky.ti1.com/index.php"
+
+    	ErrorDocument 404 /error/404.html
+    	ErrorDocument 500 /error/404.html
+    	ErrorDocument 502 /error/404.html
+    	ErrorDocument 503 /error/404.html
+    	ErrorDocument 504 /error/404.html
+
+    	ErrorLog ${APACHE_LOG_DIR}/error.log
+    	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>
+```
+ Dan dilakukan restart apache menggunakan perintah ```service apache2 restart```
+
+b. Dilakukan testing pada Loguetown dengan perintah ```lynx http://super.franky.ti1.com/sesuatu.php```
+        
 ## Soal 13
  Luffy juga meminta Nami untuk dibuatkan konfigurasi virtual host. Virtual host ini bertujuan untuk dapat mengakses file asset ```www.super.franky.yyy.com/public/js``` menjadi ```www.super.franky.yyy.com/js```
 
 ## Jawaban
----
+a. Pada Skypie dilakukan edit kofigurasi pada ```/etc/apache2/sites-available/super.franky.ti1.com.conf``` dan ditambahkan ```Alias "/js" "/var/www/super.franky.ti1.com/public/js"``` seperti ini.
+```
+<VirtualHost *:80>
+
+    	ServerAdmin webmaster@localhost
+    	DocumentRoot /var/www/super.franky.ti1.com
+    	ServerName super.franky.ti1.com
+    	ServerAlias www.super.franky.ti1.com
+
+     	<Directory /var/www/super.franky.ti1.com>
+         	Options +FollowSymLinks -Multiviews
+         	AllowOverride All
+     	</Directory>
+
+     	<Directory /var/www/super.franky.ti1.com/public>
+         	Options +Indexes
+     	</Directory>
+
+    	Alias "/index.php" "/var/www/super.franky.ti1.com/index.php"
+
+    	ErrorDocument 404 /error/404.html
+    	ErrorDocument 500 /error/404.html
+    	ErrorDocument 502 /error/404.html
+    	ErrorDocument 503 /error/404.html
+    	ErrorDocument 504 /error/404.html
+
+<Directory /var/www/super.franky.ti1.com/public/js>
+     Options +Indexes
+</Directory>
+ 
+Alias "/js" "/var/www/super.franky.ti1.com/public/js"
+
+    	ErrorLog ${APACHE_LOG_DIR}/error.log
+    	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>
+
+```
+b. Dilakukan testing pada loguetown dengan perintah ```lynx http://super.franky.ti1.com/js```
+
 ## Soal 14
 Dan Luffy meminta untuk web ```www.general.mecha.franky.yyy.com ``` hanya bisa diakses dengan port 15000 dan port 15500
 
 ## Jawaban
----
+a. Pada skypie dilakukan pindah ke directory /etc/apache2/sites-available menggunakan perintah ```cd /etc/apache2/sites-available``` lalu Copy file 000-default.conf ```cp /etc/apache2/sites-available/000-default.conf``` menjadi ```/etc/apache2/sites-available/general.mecha.franky.ti1.com.conf```. Dan dilakukan edit konfigurasi pada ```/etc/apache2/sites-available/general.mecha.franky.ti1.com.conf```. seperti berikut 
+```
+<VirtualHost *:15000>
+    	ServerAdmin webmaster@localhost
+
+    	ServerName general.mecha.franky.ti1.com
+    	DocumentRoot /var/www/general.mecha.franky.ti1.com
+    	<Directory />
+            	Options FollowSymLinks
+            	AllowOverride None
+    	</Directory>
+    	<Directory /var/www/general.mecha.franky.ti1.com>
+            	Options Indexes FollowSymLinks MultiViews
+            	AllowOverride All
+            	Order allow,deny
+            	allow from all
+    	</Directory>
+
+    	ErrorLog ${APACHE_LOG_DIR}/error.log
+    	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>
+
+<VirtualHost *:15500>
+    	ServerAdmin webmaster@localhost
+    	ServerName general.mecha.franky.ti1.com
+    	DocumentRoot /var/www/general.mecha.franky.ti1.com
+    	<Directory />
+            	Options FollowSymLinks
+            	AllowOverride None
+    	</Directory>
+    	<Directory /var/www/general.mecha.franky.ti1.com>
+            	Options Indexes FollowSymLinks MultiViews
+            	AllowOverride All
+            	Order allow,deny
+            	allow from all
+    	</Directory>
+
+    	ErrorLog ${APACHE_LOG_DIR}/error.log
+    	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>
+
+```
+Dan pada file ```/etc/apache2/ports.conf``` ditambahkan line listen 15000 dan listen 15500.
+
+Lalu mengaktifkan konfigurasi dengan perintah ```a2ensite general.mecha.franky.ti1.com.conf```. Dan pada /var/www dibuat folder dengan perintah ```mkdir -p /var/www/general.mecha.franky.ti1.com```. 
+
+dilakukan unzip pada github modul 2 jarkom di directory super.franky.ti1.com seperti pada perintah ```unzip /root/Praktikum-Modul-2-Jarkom/general.mecha.franky.zip -d /var/www/general.mecha.franky.ti1.com```.
+
+Pemindahan ke folder menggunakan perintah seperti berikut
+```mv /var/www/general.mecha.franky.ti1.com/general.mecha.franky/* /var/www/general.mecha.franky.ti1.com```
+
+Dan dilakukan restart apache menggunakan perintah ```service apache2 restart```
+
+b. Testing pada loguetown menggunakan perintah 
+```
+lynx http://general.mecha.franky.ti1.com:15000
+lynx http://general.mecha.franky.ti1.com:15500
+```
 ## Soal 15
 dengan autentikasi username luffy dan password onepiece dan file di ```/var/www/general.mecha.franky.yyy```
 
 ## Jawaban
----
+a. Pada skypie menjalankan perintah ```htpasswd -c -b /etc/apache2/.htpasswd luffy onepiece ``` membuat
+file yang menyimpan username dan password kedalam file /etc/apache2/.htpasswd
+dengan user luffy dan password onepiece, lalu akan ada prompt untuk memasukkan passwordnya. 
+
+Pada file ```/etc/apache2/sites-available``` dan edit pada ```general.mecha.franky.ti1.com.conf``` dengan menambahkan AllowOverride All.
+
+Lalu edit pada ``` /var/www/general.mecha.franky.ti1.com/.htaccess``` dengan berikut ini
+```
+AuthType Basic
+AuthName "Restricted Content."
+AuthUserFile /etc/apache2/,htpasswd
+Require valid-user
+```
+Dan dilakukan restart apache menggunakan perintah ```service apache2 restart```
+
+b. Pada Loguetown dilakukan testing dengan perintah 
+```
+lynx http://general.mecha.franky.ti1.com:15000
+lynx http://general.mecha.franky.ti1.com:15500
+```
+
 ## Soal 16
 Dan setiap kali mengakses IP Skypie akan dialihkan secara otomatis ke ```www.franky.yyy.com```
 
 ## Jawaban
----
+a. Pada Skypie dilakukan edit pada file ``` /etc/apache2/sites-available/000-default.conf``` dengan menambahkan line ```Redirect 301 / http://www.franky.ti1.com```
+
+Dan dilakukan restart apache menggunakan perintah ```service apache2 restart```
+
+b. Pada Loguetown dilakukan testing dengan perintah ```lynx http://10.42.2.4``` yang mengakses IP skypie 
+
 ## Soal 17
 Dikarenakan Franky juga ingin mengajak temannya untuk dapat menghubunginya melalui website ```www.super.franky.yyy.com``` , dan dikarenakan pengunjung web server pasti akan bingung dengan randomnya images yang ada, maka Franky juga meminta untuk mengganti request gambar yang memiliki substring **“franky”** akan diarahkan menuju **franky.png**. Maka bantulah Luffy untuk membuat konfigurasi dns dan web server ini!
 ## Jawaban
----
+a. Pada Skypie dilakukan edit di ``` /var/www/super.franky.ti1.com/.htaccess``` seperti berikut ini 
+```
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+RewriteRule ^(.*)franky(.*)$ public/images/franky.png
+```
+Dan dilakukan restart apache menggunakan perintah ```service apache2 restart```
+
+b. Pada Loguetown dilakukan testing dengan perintah ```lynx http://www.super.franky.ti1.com/public/images/franky.png```
+
 ## Kendala
