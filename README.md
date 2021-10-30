@@ -481,6 +481,8 @@ Untuk mengaktifkan konfigurasi menggunakan perintah ```a2ensite super.franky.ti1
 
 b. Melakukan testing pada Loguetown dengan perintah ```lynx http://super.franky.ti1.com/home```. seprti berikut ini
 
+![10](https://user-images.githubusercontent.com/73151978/139522209-1a87f5ed-c0a3-4356-ae2f-a53ac1b63a5e.png)
+
 ## Soal 11
 Akan tetapi, pada folder /public, Luffy ingin hanya dapat melakukan directory listing saja (pada ```super.franky.ti1.com```)
 
@@ -521,6 +523,8 @@ Dan dilakukan restart apache menggunakan perintah ```service apache2 restart```.
 
 b. Dilakukan testing pada Loguetown dengan perintah ```lynx http://super.franky.ti1.com/public```. untuk mengecek apakah sudah melakukan directory listing pada folder/public.
 
+![11](https://user-images.githubusercontent.com/73151978/139522200-c2e6fecc-b74f-4abf-be38-0af123e83367.png)
+
 ## Soal 12
 Tidak hanya itu, Luffy juga menyiapkan error file 404.html pada folder /error untuk mengganti error kode pada apache
 
@@ -560,6 +564,8 @@ a. Pada Skypie dilakukan edit kofigurasi pada ```/etc/apache2/sites-available/su
  Dan dilakukan restart apache menggunakan perintah ```service apache2 restart```
 
 b. Dilakukan testing pada Loguetown dengan perintah ```lynx http://super.franky.ti1.com/sesuatu.php```
+
+![12](https://user-images.githubusercontent.com/73151978/139522206-c39699a4-4256-4afe-8ac8-4d36e00baab2.png)
         
 ## Soal 13
  Luffy juga meminta Nami untuk dibuatkan konfigurasi virtual host. Virtual host ini bertujuan untuk dapat mengakses file asset ```www.super.franky.yyy.com/public/js``` menjadi ```www.super.franky.yyy.com/js```
@@ -604,6 +610,8 @@ Alias "/js" "/var/www/super.franky.ti1.com/public/js"
 
 ```
 b. Dilakukan testing pada loguetown dengan perintah ```lynx http://super.franky.ti1.com/js```
+
+![13](https://user-images.githubusercontent.com/73151978/139522238-de1dc9b8-65d9-4d13-b3fe-f384d5617191.png)
 
 ## Soal 14
 Dan Luffy meminta untuk web ```www.general.mecha.franky.yyy.com ``` hanya bisa diakses dengan port 15000 dan port 15500
@@ -669,6 +677,8 @@ b. Testing pada loguetown menggunakan perintah
 lynx http://general.mecha.franky.ti1.com:15000
 lynx http://general.mecha.franky.ti1.com:15500
 ```
+![14](https://user-images.githubusercontent.com/73151978/139522240-fdae073e-4693-4feb-a41f-d537e601a97f.png)
+
 ## Soal 15
 dengan autentikasi username luffy dan password onepiece dan file di ```/var/www/general.mecha.franky.yyy```
 
@@ -694,6 +704,12 @@ lynx http://general.mecha.franky.ti1.com:15000
 lynx http://general.mecha.franky.ti1.com:15500
 ```
 
+![15a](https://user-images.githubusercontent.com/73151978/139522241-732dff15-c419-4afa-ae3e-ed9cb14d343f.png)
+
+![15b](https://user-images.githubusercontent.com/73151978/139522242-d66785ab-f361-47f8-922a-d125cfcbdc96.png)
+
+![15c](https://user-images.githubusercontent.com/73151978/139522245-4ce4b254-95e9-409a-9996-06bfc541d2b9.png)
+
 ## Soal 16
 Dan setiap kali mengakses IP Skypie akan dialihkan secara otomatis ke ```www.franky.yyy.com```
 
@@ -703,6 +719,10 @@ a. Pada Skypie dilakukan edit pada file ``` /etc/apache2/sites-available/000-def
 Dan dilakukan restart apache menggunakan perintah ```service apache2 restart```
 
 b. Pada Loguetown dilakukan testing dengan perintah ```lynx http://10.42.2.4``` yang mengakses IP skypie 
+
+![16a](https://user-images.githubusercontent.com/73151978/139522246-63a02ae3-a61c-44e7-b224-abd76887c5f9.png)
+
+![16b](https://user-images.githubusercontent.com/73151978/139522247-1b68e4cd-0bbf-4322-a15b-f576389f706d.png)
 
 ## Soal 17
 Dikarenakan Franky juga ingin mengajak temannya untuk dapat menghubunginya melalui website ```www.super.franky.yyy.com``` , dan dikarenakan pengunjung web server pasti akan bingung dengan randomnya images yang ada, maka Franky juga meminta untuk mengganti request gambar yang memiliki substring **“franky”** akan diarahkan menuju **franky.png**. Maka bantulah Luffy untuk membuat konfigurasi dns dan web server ini!
@@ -718,4 +738,5 @@ Dan dilakukan restart apache menggunakan perintah ```service apache2 restart```
 
 b. Pada Loguetown dilakukan testing dengan perintah ```lynx http://www.super.franky.ti1.com/public/images/franky.png```
 
+![17](https://user-images.githubusercontent.com/73151978/139522235-5e501dc9-6c4d-4b1b-9153-16204785bec8.png)
 ## Kendala
