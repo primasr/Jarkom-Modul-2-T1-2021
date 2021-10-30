@@ -83,7 +83,7 @@ www     IN      CNAME   franky.ti1.com.
 ```
 Dan melakukan restart dengan ```service bind9 restart```
 
-b. Kemudian pada Loguetown kami melakukan setting nameserver untuk mengarahkan client Loguetown ke Enniesloby seperti berikut di ```etc/resolv.conf```
+b. Kemudian pada Loguetown kami melakukan setting nameserver untuk mengarahkan client Loguetown ke Enniesloby seperti berikut di ```/etc/resolv.conf```
 ```nameserver 10.42.2.2```
 
 Setelah itu melakukan testing dengan command:
@@ -475,9 +475,9 @@ a. Pada node skypie melakukan konfigurasi virtual host dengan perintah ```/etc/a
 </VirtualHost>
 
 ```
-Untuk mengaktifkan suatu konfigurasi, kita menggunakan perintah a2ensite diikuti dengan nama file konfigurasi yang telah dibuat. Perintah yang dijalankan ```a2ensite super.franky.ti1.com.conf```. lalu pindahkan directory dengan perintah ```cd /var/www```. melakukan copyfile ```cp -R franky.ti1.com super.franky.ti1.com```.
+Untuk mengaktifkan suatu konfigurasi, kita menggunakan perintah a2ensite diikuti dengan nama file konfigurasi yang telah dibuat. Perintah yang dijalankan ```a2ensite super.franky.ti1.com```. lalu pindahkan directory dengan perintah ```cd /var/www```. melakukan copyfile ```cp -R franky.ti1.com super.franky.ti1.com```.
 
-Untuk mengaktifkan konfigurasi menggunakan perintah ```a2ensite super.franky.ti1.com.conf``` dan dilakukan restart apache menggunakan perintah ```service apache2 restart```.
+Untuk mengaktifkan konfigurasi menggunakan perintah ```a2ensite super.franky.ti1.com``` dan dilakukan restart apache menggunakan perintah ```service apache2 restart```.
 
 b. Melakukan testing pada Loguetown dengan perintah ```lynx http://super.franky.ti1.com/home```. seprti berikut ini
 
@@ -655,7 +655,7 @@ a. Pada skypie dilakukan pindah ke directory /etc/apache2/sites-available menggu
 ```
 Dan pada file ```/etc/apache2/ports.conf``` ditambahkan line listen 15000 dan listen 15500.
 
-Lalu mengaktifkan konfigurasi dengan perintah ```a2ensite general.mecha.franky.ti1.com.conf```. Dan pada /var/www dibuat folder dengan perintah ```mkdir -p /var/www/general.mecha.franky.ti1.com```. 
+Lalu mengaktifkan konfigurasi dengan perintah ```a2ensite general.mecha.franky.ti1.com```. Dan pada /var/www dibuat folder dengan perintah ```mkdir -p /var/www/general.mecha.franky.ti1.com```. 
 
 dilakukan unzip pada github modul 2 jarkom di directory super.franky.ti1.com seperti pada perintah ```unzip /root/Praktikum-Modul-2-Jarkom/general.mecha.franky.zip -d /var/www/general.mecha.franky.ti1.com```.
 
@@ -683,7 +683,7 @@ Lalu edit pada ``` /var/www/general.mecha.franky.ti1.com/.htaccess``` dengan ber
 ```
 AuthType Basic
 AuthName "Restricted Content."
-AuthUserFile /etc/apache2/,htpasswd
+AuthUserFile /etc/apache2/.htpasswd
 Require valid-user
 ```
 Dan dilakukan restart apache menggunakan perintah ```service apache2 restart```
